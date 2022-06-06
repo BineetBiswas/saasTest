@@ -28,7 +28,7 @@ class KybProfile(APIView):
                 
                 return Response(data, status=status.HTTP_200_OK)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        return Response("Fucked", status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
             
 
        

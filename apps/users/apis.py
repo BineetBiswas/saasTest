@@ -33,7 +33,7 @@ def get_tokens_for_user(user):
 
 #         # Add custom claims
 #         token['email'] = user.email
-#         token['message'] = "CHUT"
+#         
 #         # ...
 
 #         return token
