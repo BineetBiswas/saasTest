@@ -34,11 +34,12 @@ class KybGstinCheck(APIView):
         data = request.data
         serializer=Kyb_Gstin_Check(data=data)
         user = request.user
+        type = "GSTIN"
 
         if serializer.is_valid():
             gstin = serializer.validated_data['gstin']
 
-            result = decentroAPI(gstin)
+            result = decentroAPI(type, gstin)
             if result['kycStatus']=='SUCCESS':
         
                 pan = result['kycResult']['pan']
@@ -77,12 +78,13 @@ class KybCinCheck(APIView):
         data = request.data
         serializer=Kyb_Cin_Check(data=data)
         user = request.user
+        type = "CIN"
         
 
         if serializer.is_valid():
             cin = serializer.validated_data['cin']
 
-            result = decentroAPI(cin)
+            result = decentroAPI(type, cin)
             print(type(result))
             status = result.get("kycStatus")
             if not status:
@@ -90,7 +92,7 @@ class KybCinCheck(APIView):
                 din = result['kycResult']['directors'][0]['dinOrPan']
                 address = result['kycResult']['companyMasterData']['registeredAddress']
                 
-                business = BusinessDetail.objects.get(company = request.user.company)
+                business = BusinessDetail.objects.get(company = user.company)
                 setattr(business, 'DIN', din)
                 setattr(business, 'company_address', address)
                 business.save()

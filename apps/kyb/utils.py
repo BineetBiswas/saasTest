@@ -2,12 +2,12 @@ import os
 import requests
 import json
 
-def decentroAPI(id):
+def decentroAPI(type, id):
     url = "https://in.staging.decentro.tech/kyc/public_registry/validate"
 
     payload = json.dumps({
     "reference_id": "0000-0000-0000-2004",
-    "document_type": "GSTIN",
+    "document_type": type,
     "id_number": id,
     "consent": "Y",
     "consent_purpose": "For bank account purpose only"
