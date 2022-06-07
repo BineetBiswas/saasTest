@@ -8,15 +8,15 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'password', 'is_verified']
+        fields = ['email', 'is_verified']
 
 class LoginSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=True, allow_blank=False, max_length=255)
 
 
 class VerifyAccountSerializer(serializers.Serializer):
-    email = serializers.EmailField()
-    otp = serializers.CharField()
+    email = serializers.EmailField(required=True, allow_blank=False, max_length=100)
+    otp = serializers.CharField(required=True, allow_blank=False, max_length=100)
     
 
 # class MyAuthTokenSerializer(serializers.Serializer):

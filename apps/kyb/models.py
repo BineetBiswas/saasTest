@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+
 
 # Create your models here.
 
@@ -26,11 +28,16 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=200, null=True, blank=False)
     last_name = models.CharField(max_length=200, null=True, blank=False)
     email = models.CharField(max_length=200, null=True, blank=False)
-    phone_number = models.CharField(max_length=122, default="")
+    phone_number = models.IntegerField(null=True, blank=False)
     designation = models.CharField(max_length=200, null=True, blank=False)
     industry = models.CharField(max_length=200, null=True, blank=False)
-    business_name = models.CharField(max_length=200, null=True, blank=False)
-    annual_revenue = models.CharField(max_length=200, null=True, blank=False)
+    business_name = models.CharField(max_length=200, null = True, blank=False)
+    annual_revenue=models.IntegerField(null=True, blank=False)
+
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
     
 
     def __str__(self):
@@ -44,13 +51,14 @@ class BusinessDetail(models.Model):
                                 primary_key=True)
     GSTIN = models.CharField(max_length=50, null=True)
     # order_name = models.CharField(max_length=200, null=True, blank=True)
-    PAN = models.CharField(max_length=200, null=True, blank=True)
+    PAN = models.CharField(max_length=200, null=True)
     CIN = models.CharField(max_length=200, null=True)
+    DIN = models.CharField(max_length=200, null=True)
     TAN = models.CharField(max_length=200, null=True)
-    phone_number = models.IntegerField(null=True)
+    # phone_number = models.IntegerField(null=True)
     company_address=models.CharField(max_length=255, null=True)
-    annual_revenue=models.IntegerField(null=True)
-    industry= models.CharField(max_length=255, null=True)
+    # annual_revenue=models.IntegerField(null=True)
+    # industry= models.CharField(max_length=255, null=True)
 
     
 
