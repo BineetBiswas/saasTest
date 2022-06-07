@@ -1,5 +1,6 @@
 from apps.kyb.models import BusinessDetail, Company, Profile
 from apps.kyb.serializers import CompanySerializer, Kyb_Cin_Check, Kyb_Gstin_Check, ProfileSerializer
+from apps.kyb.utils import decentroAPI
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -33,29 +34,11 @@ class KybGstinCheck(APIView):
         data = request.data
         serializer=Kyb_Gstin_Check(data=data)
         user = request.user
-        
 
         if serializer.is_valid():
             gstin = serializer.validated_data['gstin']
 
-            url = "https://in.staging.decentro.tech/kyc/public_registry/validate"
-
-            payload = json.dumps({
-            "reference_id": "0000-0000-0000-2004",
-            "document_type": "GSTIN",
-            "id_number": gstin,
-            "consent": "Y",
-            "consent_purpose": "For bank account purpose only"
-            })
-            headers = {
-            'client_id': os.environ.get('client_id'),
-            'client_secret': os.environ.get('client_secret'),
-            'module_secret': os.environ.get('module_secret'),
-            'Content-Type': 'application/json'
-            }
-
-            response = requests.request("POST", url, headers=headers, data=payload)
-            result = json.loads(response.text)
+            result = decentroAPI(gstin)
             if result['kycStatus']=='SUCCESS':
         
                 pan = result['kycResult']['pan']
@@ -99,24 +82,7 @@ class KybCinCheck(APIView):
         if serializer.is_valid():
             cin = serializer.validated_data['cin']
 
-            url = "https://in.staging.decentro.tech/kyc/public_registry/validate"
-
-            payload = json.dumps({
-            "reference_id": "0000-0000-0000-2005",
-            "document_type": "CIN",
-            "id_number": cin,
-            "consent": "Y",
-            "consent_purpose": "For bank account purpose only"
-            })
-            headers = {
-            'client_id': os.environ.get('client_id'),
-            'client_secret': os.environ.get('client_secret'),
-            'module_secret': os.environ.get('module_secret'),
-            'Content-Type': 'application/json'
-            }
-
-            response = requests.request("POST", url, headers=headers, data=payload)
-            result = json.loads(response.text)
+            result = decentroAPI(cin)
             print(type(result))
             status = result.get("kycStatus")
             if not status:

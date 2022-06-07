@@ -15,7 +15,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class VerifyAccountSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True, allow_blank=False, max_length=100)
+    email = serializers.EmailField(required=True, allow_blank=False, max_length=255)
     otp = serializers.CharField(required=True, allow_blank=False, max_length=100)
     
 
