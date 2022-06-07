@@ -121,7 +121,7 @@ class KybCinCheck(APIView):
             status = result.get("kycStatus")
             if not status:
         
-                din = result['kycResult']['directors']
+                din = result['kycResult']['directors'][0]['dinOrPan']
                 address = result['kycResult']['companyMasterData']['registeredAddress']
                 
                 business = BusinessDetail.objects.get(request.user.company)
