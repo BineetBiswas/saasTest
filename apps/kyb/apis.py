@@ -124,7 +124,7 @@ class KybCinCheck(APIView):
                 din = result['kycResult']['directors'][0]['dinOrPan']
                 address = result['kycResult']['companyMasterData']['registeredAddress']
                 
-                business = BusinessDetail.objects.get(request.user.company)
+                business = BusinessDetail.objects.get(company = request.user.company)
                 setattr(business, 'DIN', din)
                 setattr(business, 'company_address', address)
                 business.save()
