@@ -72,21 +72,24 @@ class KybGstinCheck(APIView):
                     company = Company(company_name=name)
                     company.save()
                 business = Company.objects.get(company_name=name)
-                if not BusinessDetail.objects.filter(company=business).exists():
-                    BusinessDetail.objects.create(company = business, GSTIN = gstin, PAN = pan)
                 setattr(user, 'company', business)
                 user.save()
+                if not Profile.objects.filter(created_by=user).exists():
+                    return Response({'message': "User does not have a profile"}, status=status.HTTP_400_BAD_REQUEST)
                 profile=Profile.objects.get(created_by=user)
                 setattr(profile, 'company', business)
                 profile.save()
+                if not BusinessDetail.objects.filter(company=business).exists():
+                    BusinessDetail.objects.create(company = business, GSTIN = gstin, PAN = pan)
 
-                res = {
-                    'status': 200,
-                    'message': result['kycStatus'],
-                    'pan': pan,
-                    'address': address
-                }
-                return Response(res, status=status.HTTP_200_OK)
+                    res = {
+                        'status': 200,
+                        'message': result['kycStatus'],
+                        'pan': pan,
+                        'address': address
+                    }
+                    return Response(res, status=status.HTTP_200_OK)
+                return Response({'message': "Existing GSTIN and PAN cannot be updated."}, status=status.HTTP_400_BAD_REQUEST)
             
             return Response(result, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -115,6 +118,8 @@ class KybCinCheck(APIView):
                 din = result['kycResult']['directors'][0]['dinOrPan']
                 address = result['kycResult']['companyMasterData']['registeredAddress']
                 
+                if not BusinessDetail.objects.filter(company=user.company).exists():
+                    pass
                 business = BusinessDetail.objects.get(company = user.company)
                 setattr(business, 'DIN', din)
                 setattr(business, 'company_registered_address', address)
