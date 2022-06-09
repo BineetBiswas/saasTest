@@ -21,10 +21,10 @@ class Company(models.Model):
 
 class Profile(models.Model):
     
-    company = models.ForeignKey(Company,
-                                 on_delete=models.SET_NULL,
+    company = models.OneToOneField(Company,
+                                 on_delete=models.CASCADE,
                                  null=True,
-                                 blank=True)
+                                )
     first_name = models.CharField(max_length=200, null=True, blank=False)
     last_name = models.CharField(max_length=200, null=True, blank=False)
     email = models.CharField(max_length=200, null=True, blank=False)
@@ -56,7 +56,13 @@ class BusinessDetail(models.Model):
     DIN = models.CharField(max_length=200, null=True)
     TAN = models.CharField(max_length=200, null=True)
     # phone_number = models.IntegerField(null=True)
-    company_address=models.CharField(max_length=255, null=True)
+    company_registered_address=models.CharField(max_length=255, null=True)
+    contact_address_Line1= models.CharField(max_length=255, null=True)
+    contact_address_Line2= models.CharField(max_length=255, null=True)
+    contact_address_PinCode= models.CharField(max_length=255, null=True)
+    contact_address_State= models.CharField(max_length=255, null=True)
+    contact_address_City= models.CharField(max_length=255, null=True)
+
     # annual_revenue=models.IntegerField(null=True)
     # industry= models.CharField(max_length=255, null=True)
 
@@ -71,11 +77,11 @@ class BankDetail(models.Model):
     company = models.OneToOneField(Company,
                                 on_delete=models.CASCADE,
                                 primary_key=True)
-    bank_name = models.CharField(max_length=50, null=True)
+    bank_name = models.CharField(max_length=255, null=True)
     # order_name = models.CharField(max_length=200, null=True, blank=True)
-    branch_name = models.CharField(max_length=200, null=True, blank=True)
-    ifsc_code = models.CharField(max_length=200, null=True)
-    account_no = models.CharField(max_length=200, null=True)
+    branch_name = models.CharField(max_length=255, null=True, blank=True)
+    ifsc_code = models.CharField(max_length=255, null=True)
+    account_no = models.CharField(max_length=255, null=True)
     
 
     
