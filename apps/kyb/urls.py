@@ -11,5 +11,5 @@ urlpatterns = [
     path('cin-check/', KybCinCheck.as_view()),
     path('business-detail/', KybBusinessDetailView.as_view()),
     path('bank-detail/', KybBankDetailView.as_view()),
-
+    
 ]

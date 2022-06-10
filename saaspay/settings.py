@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.users',
-    'apps.kyb',                         
+    'apps.kyb',
+    'apps.sellers',                        
     'rest_framework',
     'rest_framework_simplejwt',
 ]

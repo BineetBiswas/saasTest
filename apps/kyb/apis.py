@@ -18,9 +18,11 @@ class KybProfile(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
+        print(request.user.id)
         if not Profile.objects.filter(created_by=request.user).exists():
             return Response({'message': "No profile associated with user"}, status=status.HTTP_400_BAD_REQUEST)
         profile= Profile.objects.get(created_by=request.user)
+        print(profile.id)
         serializer= ProfileSerializer(profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -197,3 +199,7 @@ class KybBusinessDetailView(APIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({'message': 'No account found'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+

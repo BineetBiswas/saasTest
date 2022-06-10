@@ -1,4 +1,4 @@
-from apps.kyb.models import BankDetail, BusinessDetail, Company, Product, Profile
+from apps.kyb.models import BankDetail, BusinessDetail, Company, Profile
 from rest_framework import serializers
 
 
@@ -49,11 +49,6 @@ class ProfileSerializer(serializers.Serializer):
 #         model = BankDetail
 #         fields = [field.name for field in model._meta.fields]
 
-class ProductSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Product
-        fields = [field.name for field in model._meta.fields]
-
 
 class Kyb_Gstin_Check(serializers.Serializer):
     gstin    = serializers.CharField(required=True, allow_blank=False, max_length=100)
@@ -98,3 +93,9 @@ class BusinessDetailSerializer(serializers.Serializer):
         instance.contact_address_City = validated_data.get('contact_address_City', instance.contact_address_City)
         instance.save()
         return instance
+
+
+
+
+
+    
