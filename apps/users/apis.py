@@ -14,6 +14,7 @@ from rest_framework.permissions import AllowAny
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
+    refresh['company'] = user.company
 
     return {
         'refresh': str(refresh),

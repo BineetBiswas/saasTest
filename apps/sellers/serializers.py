@@ -9,6 +9,7 @@ class ProductSerializer(serializers.Serializer):
     product_name = serializers.CharField(required=True, allow_blank=False, max_length=200)
     pricing_link = serializers.URLField(required=True, allow_blank=False)
     product_details = serializers.CharField(required=True, allow_blank=False)
+    tiers = serializers.JSONField()
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data) 
@@ -18,6 +19,7 @@ class ProductSerializer(serializers.Serializer):
         instance.product_name = validated_data.get('product_name', instance.product_name)
         instance.pricing_link = validated_data.get('pricing_link', instance.pricing_link)
         instance.product_details = validated_data.get('product_details', instance.product_details)
+        # instance.tiers = validated_data.get('tiers', instance.tiers)
         instance.save()
         return instance
 

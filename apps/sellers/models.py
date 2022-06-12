@@ -2,6 +2,7 @@ from django.db import models
 
 from apps.kyb.models import Company
 
+
 # Create your models here.
 class Product(models.Model):
     
@@ -13,7 +14,7 @@ class Product(models.Model):
     # order_name = models.CharField(max_length=200, null=True, blank=True)
     product_details = models.CharField(max_length=200, null=True, blank=True)
     pricing_link = models.CharField(max_length=255, null=True)
-    # tiers = models.CharField(max_length=200, null=True)
+    # tiers = models.JSONField(null=True)
     
 
     
