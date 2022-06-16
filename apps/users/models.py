@@ -21,6 +21,7 @@ class User(AbstractUser):
                                  blank=True)
     is_verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=6 , null=True, blank=True)
+    activation_key = models.CharField(max_length=150,blank=True,null=True)
     
     
 
