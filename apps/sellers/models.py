@@ -20,10 +20,14 @@ class Product(models.Model):
     
 
     def __str__(self):
-        return str(self.product_name)
+        return str(self.id)
 
 
 class Tier(models.Model):
+    company = models.ForeignKey(Company,
+                                 on_delete=models.CASCADE,
+                                 null=True,
+                                 blank=True)
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE,
                                  null=True,
