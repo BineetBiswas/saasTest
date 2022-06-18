@@ -113,7 +113,6 @@ class KybCinCheck(APIView):
             cin = serializer.validated_data['cin']
 
             result = decentroAPI(type, cin)
-            print(type(result))
             status = result.get("kycStatus")
             if not status:
         
