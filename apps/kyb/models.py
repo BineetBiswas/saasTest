@@ -10,6 +10,8 @@ class Company(models.Model):
     
     company_id = models.AutoField(primary_key=True)
     company_name = models.CharField(max_length=255, null=True)
+    domain=models.CharField(max_length=200, null=True)
+    admin_id = models.EmailField(max_length=200, null=True)
     is_kyb_done = models.BooleanField(default=False)
     is_kyc_done = models.BooleanField(default=False)
     is_buyer = models.BooleanField(default=False)

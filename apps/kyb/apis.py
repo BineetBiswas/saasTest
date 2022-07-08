@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
+
 # from rest_framework.renderers import JSONRenderer
 import requests
 import json
@@ -57,6 +58,8 @@ class KybGstinCheck(APIView):
         data = request.data
         serializer=Kyb_Gstin_Check(data=data)
         user = request.user
+        domain=user.email.split('@')[1]
+        print(domain)
         type = "GSTIN"
 
         if serializer.is_valid():
@@ -70,15 +73,16 @@ class KybGstinCheck(APIView):
                 address=result['kycResult']['primaryBusinessContact']['address']
                 
                 
+                if not Profile.objects.filter(created_by=user).exists():
+                    return Response({'message': "User does not have a profile"}, status=status.HTTP_400_BAD_REQUEST)
+                profile=Profile.objects.get(created_by=user)
                 if not Company.objects.filter(company_name=name).exists():
-                    company = Company(company_name=name)
+                    company = Company(company_name=name, domain=domain, admin_id = user.email)
                     company.save()
                 business = Company.objects.get(company_name=name)
                 setattr(user, 'company', business)
                 user.save()
-                if not Profile.objects.filter(created_by=user).exists():
-                    return Response({'message': "User does not have a profile"}, status=status.HTTP_400_BAD_REQUEST)
-                profile=Profile.objects.get(created_by=user)
+                
                 setattr(profile, 'company', business)
                 profile.save()
                 if not BusinessDetail.objects.filter(company=business).exists():

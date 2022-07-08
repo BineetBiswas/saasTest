@@ -1,4 +1,6 @@
 from django.db import models
+from apps.users.models import User
+from django.conf import settings
 
 from apps.kyb.models import Company
 
@@ -58,12 +60,20 @@ class Subsription(models.Model):
 
 
 class Customer(models.Model):
-    
+    buyer = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                on_delete=models.CASCADE,
+                                null=True,
+                                 blank=True)
     first_name = models.CharField(max_length=200, null=True)
     last_name = models.CharField(max_length=200, null=True)
     # order_name = models.CharField(max_length=200, null=True, blank=True)
-    company_name = models.CharField(max_length=200, null=True)
+    email= models.EmailField(max_length=200, null=True, blank=False)
+    domain= models.CharField(max_length=200, null=True)
     phone_no = models.CharField(max_length=200, null=True)
+    company = models.ForeignKey(Company,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
 
     
 
@@ -88,3 +98,29 @@ class InviteToBuyer(models.Model):
 
     def __str__(self):
         return str(self.company) 
+
+
+class Order(models.Model):
+    seller =  models.ForeignKey(Company,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
+    buyer = models.ForeignKey(Customer,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
+    product = models.ForeignKey(Product,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
+    tier = models.ForeignKey(Tier,
+                                 on_delete=models.SET_NULL,
+                                 null=True,
+                                 blank=True)
+    price = models.CharField(max_length=200, null=True)
+    special_instruction = models.CharField(max_length=200, null=True)
+    invoice_date = models.DateTimeField(auto_now_add=True, null=True)
+
+
+    def __str__(self):
+        return str(self.id)

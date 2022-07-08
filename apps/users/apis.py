@@ -16,7 +16,10 @@ import pyotp
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
-    refresh['company'] = user.company
+    refresh['company'] = user.company.company_name
+    refresh['kyc_required']=user.kyc_required
+    refresh['is_kyc_done']=user.company.is_kyc_done
+    refresh['is_kyb_done']=user.company.is_kyb_done
 
     return {
         'refresh': str(refresh),
@@ -147,8 +150,9 @@ class VerifyOTP(APIView):
             data = request.data
             serializer = VerifyAccountSerializer(data = data)
             if serializer.is_valid():
-                email = serializer.data['email']
-                otp = serializer.data['otp']
+                email = serializer.validated_data['email']
+                otp = serializer.validated_data['otp']
+                
 
                 user = User.objects.filter(email = email)
                 if not user.exists():
@@ -175,7 +179,7 @@ class VerifyOTP(APIView):
                     if verify:
                         user.is_verified = True
                         user.save()
-
+                        print(user.company.admin_id)
                     
                         return Response({
                             'status': 200,
@@ -193,7 +197,7 @@ class VerifyOTP(APIView):
             })
         except Exception as e:
             print(e)
-            return Response({"No User" : "Invalid otp OR No inactive user found for given otp"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"No User" : "Invalid otp OR No active user found for given otp"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

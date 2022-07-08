@@ -22,7 +22,8 @@ class User(AbstractUser):
     is_verified = models.BooleanField(default=False)
     otp = models.CharField(max_length=6 , null=True, blank=True)
     activation_key = models.CharField(max_length=150,blank=True,null=True)
-    
+    rbac_role = models.CharField(max_length=150,blank=True,null=True)
+    kyc_required = models.BooleanField(default=False)
     
 
     USERNAME_FIELD = 'email'
